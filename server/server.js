@@ -1,27 +1,18 @@
-import path from 'path'
-import express from 'express'
+import app from './express'
 import { MongoClient } from 'mongodb'
-import template from './../template'
+import config from './../config/config'
+
 //comment out before building for production
 import devBundle from './devBundle'
 
-const app = express()
 //comment out before building for production
 devBundle.compile(app)
 
-const CURRENT_WORKING_DIR = process.cwd()
-app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
-
-app.get('/', (req, res) => {
-  res.status(200).send(template())
-})
-
-let port = process.env.PORT || 3000
-app.listen(port, function onStart(err) {
+app.listen(config.port, (err) => {
   if (err) {
     console.log(err)
   }
-  console.info('Server started on port %s.', port)
+  console.info('Server started on port %s.', config.port)
 })
 
 // Database Connection URL
